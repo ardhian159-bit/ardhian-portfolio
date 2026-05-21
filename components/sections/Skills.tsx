@@ -4,8 +4,12 @@ import { motion } from 'framer-motion'
 import { Terminal, Briefcase, BadgeCheck } from 'lucide-react'
 import { fadeUp, stagger, viewport } from '@/lib/animations'
 import { skills, certifications } from '@/lib/data'
+import { useLang } from '@/lib/i18n'
+import { content } from '@/lib/content'
 
 export default function Skills() {
+  const { lang } = useLang()
+  const t = content[lang]
   return (
     <section className="py-24">
       <div className="mx-auto max-w-[1200px] px-6">
@@ -20,7 +24,7 @@ export default function Skills() {
           <motion.div variants={fadeUp} className="flex items-center gap-2 mb-3">
             <span className="inline-block w-6 h-px bg-emerald-300" />
             <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800">
-              Skills
+              {t.skills.sectionLabel}
             </span>
           </motion.div>
           <motion.h2
@@ -28,12 +32,11 @@ export default function Skills() {
             className="font-medium tracking-[-0.025em] leading-[1.08] text-ink"
             style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', textWrap: 'balance' } as React.CSSProperties}
           >
-            Technical fluency,{' '}
-            <em className="not-italic text-emerald-800">business fluency</em>.
+            {t.skills.sectionTitle}{' '}
+            <em className="not-italic text-emerald-800">{t.skills.sectionAccent}</em>.
           </motion.h2>
           <motion.p variants={fadeUp} className="mt-3.5 max-w-[620px] text-dim text-base leading-[1.55]">
-            I read SQL and stakeholder emails with equal ease. The list below is what I reach for
-            daily, not what I&apos;ve heard of.
+            {t.skills.sectionSub}
           </motion.p>
         </motion.div>
 
@@ -51,7 +54,7 @@ export default function Skills() {
               <div className="w-8 h-8 rounded-[8px] bg-emerald-100/45 text-emerald-900 grid place-items-center">
                 <Terminal className="w-4 h-4" />
               </div>
-              <h3 className="text-base font-semibold tracking-[-0.01em] text-ink">Technical &amp; data</h3>
+              <h3 className="text-base font-semibold tracking-[-0.01em] text-ink">{t.skills.technicalTitle}</h3>
             </div>
             {skills.technical.map((group) => (
               <div key={group.group} className="mb-[18px] last:mb-0">
@@ -73,7 +76,7 @@ export default function Skills() {
               <div className="w-8 h-8 rounded-[8px] bg-emerald-100/45 text-emerald-900 grid place-items-center">
                 <Briefcase className="w-4 h-4" />
               </div>
-              <h3 className="text-base font-semibold tracking-[-0.01em] text-ink">Business &amp; domain</h3>
+              <h3 className="text-base font-semibold tracking-[-0.01em] text-ink">{t.skills.businessTitle}</h3>
             </div>
             {skills.business.map((group) => (
               <div key={group.group} className="mb-[18px] last:mb-0">
@@ -100,7 +103,7 @@ export default function Skills() {
         >
           <div className="flex flex-wrap items-center gap-x-7 gap-y-3">
             <span className="text-[10px] font-semibold tracking-[0.1em] uppercase text-ghost shrink-0">
-              Certifications
+              {t.skills.certificationsLabel}
             </span>
             {certifications.map((cert, i) => (
               <span key={i} className="flex items-center gap-2.5 text-[13px] text-ink">

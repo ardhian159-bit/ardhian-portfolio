@@ -1,12 +1,17 @@
 'use client'
 
+import Image from 'next/image'
 import { Mail, MapPin, ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { fadeUp, stagger, scaleIn, viewport } from '@/lib/animations'
 import { profile } from '@/lib/data'
 import { GithubIcon, LinkedinIcon } from '@/components/ui/brand-icons'
+import { useLang } from '@/lib/i18n'
+import { content } from '@/lib/content'
 
 export default function Hero() {
+  const { lang } = useLang()
+  const t = content[lang]
   return (
     <section
       id="about"
@@ -38,7 +43,7 @@ export default function Hero() {
                   className="w-[7px] h-[7px] rounded-full bg-emerald-500 pulse-dot shrink-0"
                   style={{ boxShadow: '0 0 0 4px rgba(16, 185, 129, 0.15)' }}
                 />
-                Open to work — Surakarta &amp; remote
+                {t.hero.badge}
               </span>
             </motion.div>
 
@@ -48,15 +53,15 @@ export default function Hero() {
               className="mt-6 mb-5 font-sans font-medium leading-[0.98] tracking-[-0.035em] text-ink"
               style={{ fontSize: 'clamp(40px, 6.4vw, 76px)', textWrap: 'balance' } as React.CSSProperties}
             >
-              I build{' '}
+              {t.hero.headline1}{' '}
               <em className="not-italic text-emerald-800">
-                data systems
+                {t.hero.headlineAccent}
                 <span
                   className="cursor-blink inline-block w-[0.06em] h-[0.8em] bg-emerald-800 ml-[0.06em] align-[-0.05em]"
                 />
               </em>
               <br />
-              that ship to production.
+              {t.hero.headline2}
             </motion.h1>
 
             {/* Sub-headline */}
@@ -65,10 +70,7 @@ export default function Hero() {
               className="text-[17px] leading-[1.55] text-dim max-w-[520px]"
               style={{ textWrap: 'pretty' } as React.CSSProperties}
             >
-              Economics grad (3.85, Cum Laude) turned full-stack analyst. I ship
-              end-to-end products — Next.js + Supabase dashboards, Python data
-              pipelines, Tableau reporting — for real organisations, not toy demos.
-              Currently building the national sales pipeline at PT Intan Pariwara.
+              {t.hero.sub}
             </motion.p>
 
             {/* CTAs */}
@@ -78,7 +80,7 @@ export default function Hero() {
                 className="inline-flex items-center gap-2 h-11 px-5 rounded-[10px] bg-emerald-900 text-emerald-100 text-sm font-medium hover:bg-emerald-800 active:translate-y-px transition-all duration-160"
                 style={{ boxShadow: 'var(--shadow-brand)' }}
               >
-                See selected work
+                {t.hero.cta1}
                 <ArrowRight className="w-4 h-4" />
               </a>
               <a
@@ -86,7 +88,7 @@ export default function Hero() {
                 className="inline-flex items-center gap-2 h-11 px-5 rounded-[10px] bg-surface text-ink border border-line text-sm font-medium hover:bg-line active:translate-y-px transition-all duration-160"
               >
                 <Mail className="w-4 h-4" />
-                Get in touch
+                {t.hero.cta2}
               </a>
             </motion.div>
 
@@ -125,94 +127,41 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right: NSMS dashboard mock card */}
+          {/* Right: Photo */}
           <motion.div
             variants={scaleIn}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.24 }}
-            className="relative hidden lg:block"
+            className="relative hidden lg:flex justify-center"
           >
-            {/* Stacked shadow cards */}
-            <div
-              className="absolute bg-surface border border-line rounded-[16px] opacity-60"
-              style={{ inset: '24px -20px -28px 16px', transform: 'rotate(2deg)' }}
-            />
-            <div
-              className="absolute bg-surface border border-line rounded-[16px] opacity-45"
-              style={{ inset: '36px 12px -38px -24px', transform: 'rotate(-3deg)' }}
-            />
+            <div className="relative rotate-1 hover:rotate-0 transition-transform duration-500">
+              <div className="relative">
+                {/* Dot grid — bottom right corner */}
+                <div
+                  className="absolute -bottom-6 -right-6 w-48 h-48 -z-10"
+                  style={{
+                    backgroundImage: 'radial-gradient(circle, #1A1A18 1.5px, transparent 1.5px)',
+                    backgroundSize: '14px 14px',
+                    opacity: 0.1
+                  }}
+                />
 
-            {/* Main dashboard card */}
-            <div
-              className="relative bg-surface border border-line rounded-[16px] p-[22px]"
-              style={{ boxShadow: 'var(--shadow-lg)' }}
-            >
-              {/* Card header */}
-              <div className="flex items-center gap-2 mb-[18px]">
-                <span className="w-2 h-2 rounded-full bg-emerald-800" />
-                <span className="text-[11px] font-semibold tracking-[0.08em] uppercase text-dim">
-                  NSMS · National Overview
-                </span>
-                <span className="ml-auto font-mono text-[11px] text-ghost">W19-2026</span>
-              </div>
+                {/* Accent line — left side */}
+                <div className="absolute -left-3 top-8 bottom-8 w-1 bg-emerald-600 rounded-full opacity-60" />
 
-              {/* KPI grid */}
-              <div className="grid grid-cols-2 gap-2.5 mb-[18px]">
-                {[
-                  { label: 'Total Brutto', value: 'Rp 405 M', accent: false },
-                  { label: 'Forecast Netto', value: 'Rp 275 M', accent: false },
-                  { label: 'Pipeline', value: '1,281', accent: false },
-                  { label: 'Closing', value: 'Rp 1.5 M', accent: true },
-                ].map((kpi) => (
-                  <div
-                    key={kpi.label}
-                    className={`p-3.5 rounded-[12px] border ${
-                      kpi.accent
-                        ? 'bg-emerald-100/35 border-emerald-200'
-                        : 'bg-page border-line'
-                    }`}
-                  >
-                    <span
-                      className={`block text-[10px] uppercase tracking-[0.04em] mb-1.5 ${
-                        kpi.accent ? 'text-emerald-800' : 'text-ghost'
-                      }`}
-                    >
-                      {kpi.label}
-                    </span>
-                    <span
-                      className={`font-mono font-medium text-lg tracking-[-0.01em] ${
-                        kpi.accent ? 'text-emerald-900' : 'text-ink'
-                      }`}
-                    >
-                      {kpi.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Sales funnel */}
-              <div className="text-[11px] font-semibold text-ink mb-2.5 tracking-[0.02em]">
-                Sales funnel
-              </div>
-              {[
-                { stage: '100 · Closing', pct: 8, count: '7', color: '#16A34A' },
-                { stage: '75 · Hot', pct: 20, count: '26', color: '#DC2626' },
-                { stage: '50 · Peluang', pct: 48, count: '120', color: '#EA580C' },
-                { stage: '25 · Presentasi', pct: 100, count: '1,117', color: '#2563EB' },
-                { stage: '5 · Info Awal', pct: 10, count: '10', color: '#737373' },
-              ].map((row) => (
-                <div key={row.stage} className="flex items-center gap-2.5 text-[11px] mb-1.5">
-                  <span className="w-24 text-ghost shrink-0">{row.stage}</span>
-                  <div className="flex-1 h-4 bg-page rounded-[4px] overflow-hidden">
-                    <div
-                      className="h-full rounded-[4px]"
-                      style={{ width: `${row.pct}%`, background: row.color }}
-                    />
-                  </div>
-                  <span className="w-9 text-right font-mono font-medium text-ink">{row.count}</span>
+                {/* Photo */}
+                <div className="w-64 h-96 rounded-2xl overflow-hidden border border-[#EBEBEB] shadow-[0_20px_60px_-10px_rgba(0,0,0,0.15)]">
+                  <Image
+                    src="/photo.jpg"
+                    alt="Ardhian Caesar Hermawan"
+                    width={256}
+                    height={384}
+                    className="w-full h-full object-cover object-top"
+                    priority
+                  />
                 </div>
-              ))}
+              </div>
             </div>
           </motion.div>
         </div>

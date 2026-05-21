@@ -3,8 +3,12 @@
 import { motion } from 'framer-motion'
 import { slideLeft, stagger, fadeUp, viewport } from '@/lib/animations'
 import { experience } from '@/lib/data'
+import { useLang } from '@/lib/i18n'
+import { content } from '@/lib/content'
 
 export default function Experience() {
+  const { lang } = useLang()
+  const t = content[lang]
   return (
     <section className="py-24 border-t border-b border-line">
       <div className="mx-auto max-w-[1200px] px-6">
@@ -19,7 +23,7 @@ export default function Experience() {
           <motion.div variants={fadeUp} className="flex items-center gap-2 mb-3">
             <span className="inline-block w-6 h-px bg-emerald-300" />
             <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800">
-              Experience
+              {t.experience.sectionLabel}
             </span>
           </motion.div>
           <motion.h2
@@ -27,8 +31,8 @@ export default function Experience() {
             className="font-medium tracking-[-0.025em] leading-[1.08] text-ink"
             style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', textWrap: 'balance' } as React.CSSProperties}
           >
-            Three internships, one degree,{' '}
-            <em className="not-italic text-emerald-800">one through-line</em>: data that ships.
+            {t.experience.sectionTitle}{' '}
+            <em className="not-italic text-emerald-800">{t.experience.sectionAccent}</em>: {t.experience.sectionSub}
           </motion.h2>
         </motion.div>
 
@@ -44,7 +48,9 @@ export default function Experience() {
             viewport={viewport}
             className="flex flex-col gap-0"
           >
-            {experience.map((item, i) => (
+            {experience.map((item, i) => {
+              const text = t.experience.items[i]
+              return (
               <motion.div
                 key={i}
                 variants={slideLeft}
@@ -90,12 +96,12 @@ export default function Experience() {
                   <div className="flex items-start justify-between gap-4 flex-wrap mb-3.5">
                     <div>
                       <div className="text-base font-semibold text-ink tracking-[-0.01em] leading-[1.3]">
-                        {item.role}
+                        {text.role}
                       </div>
                       <div className="text-[13px] text-dim mt-1">
                         {item.org}{' '}
                         <span className="inline-block px-2 py-0.5 rounded-full ml-1.5 bg-page border border-line text-[11px] text-ghost font-mono">
-                          {item.location}
+                          {text.location}
                         </span>
                       </div>
                     </div>
@@ -107,12 +113,12 @@ export default function Experience() {
                           : 'bg-page border-line text-ghost',
                       ].join(' ')}
                     >
-                      {item.period}
+                      {text.period}
                     </span>
                   </div>
 
                   <ul className="flex flex-col gap-2 m-0 p-0 list-none">
-                    {item.bullets.map((bullet, j) => (
+                    {text.bullets.map((bullet, j) => (
                       <li
                         key={j}
                         className="text-sm text-dim leading-[1.55] pl-[18px] relative"
@@ -124,7 +130,8 @@ export default function Experience() {
                   </ul>
                 </div>
               </motion.div>
-            ))}
+              )
+            })}
           </motion.div>
         </div>
       </div>

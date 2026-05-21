@@ -1,6 +1,12 @@
+'use client'
+
 import { profile } from '@/lib/data'
+import { useLang } from '@/lib/i18n'
+import { content } from '@/lib/content'
 
 export default function Footer() {
+  const { lang } = useLang()
+  const t = content[lang]
   return (
     <footer className="bg-page border-t border-line py-7" style={{ paddingBottom: 'max(28px, env(safe-area-inset-bottom))' }}>
       <div className="mx-auto max-w-[1200px] px-6 flex flex-wrap items-center justify-between gap-4 text-xs text-ghost">

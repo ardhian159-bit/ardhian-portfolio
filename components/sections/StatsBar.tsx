@@ -3,7 +3,10 @@
 import { useRef, useEffect, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { fadeUp, stagger, viewport } from '@/lib/animations'
-import { stats } from '@/lib/data'
+import { useLang } from '@/lib/i18n'
+import { content } from '@/lib/content'
+
+type StatType = { value: number; decimals: number; unit: string; label: string; context: string }
 
 function useCountUp(target: number, decimals: number, active: boolean) {
   const [value, setValue] = useState(0)
@@ -24,7 +27,7 @@ function useCountUp(target: number, decimals: number, active: boolean) {
   return decimals ? value.toFixed(decimals) : value.toLocaleString()
 }
 
-function StatItem({ stat, active }: { stat: typeof stats[number]; active: boolean }) {
+function StatItem({ stat, active }: { stat: StatType; active: boolean }) {
   const display = useCountUp(stat.value, stat.decimals, active)
   return (
     <motion.div variants={fadeUp} className="px-6 border-l border-line first:border-l-0 first:pl-0">
@@ -50,6 +53,8 @@ function StatItem({ stat, active }: { stat: typeof stats[number]; active: boolea
 export default function StatsBar() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const { lang } = useLang()
+  const t = content[lang]
 
   return (
     <section className="bg-surface border-t border-b border-line py-0">
@@ -64,7 +69,7 @@ export default function StatsBar() {
             gridTemplateColumns: undefined,
           }}
         >
-          {stats.map((stat, i) => (
+          {t.stats.map((stat, i) => (
             <StatItem key={i} stat={stat} active={inView} />
           ))}
         </motion.div>

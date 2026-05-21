@@ -5,8 +5,12 @@ import { Mail, MapPin, Clock } from 'lucide-react'
 import { LinkedinIcon } from '@/components/ui/brand-icons'
 import { scaleIn, fadeUp, stagger, viewport } from '@/lib/animations'
 import { profile } from '@/lib/data'
+import { useLang } from '@/lib/i18n'
+import { content } from '@/lib/content'
 
 export default function Contact() {
+  const { lang } = useLang()
+  const t = content[lang]
   return (
     <section className="relative py-24 bg-ink text-on-ink overflow-hidden">
       {/* Subtle dotted grid overlay */}
@@ -23,7 +27,7 @@ export default function Contact() {
           <motion.div variants={fadeUp} className="flex items-center justify-center gap-2 mb-[18px]">
             <span className="inline-block w-6 h-px bg-emerald-300" />
             <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-300">
-              Get in touch
+              {t.contact.eyebrow}
             </span>
             <span className="inline-block w-6 h-px bg-emerald-300" />
           </motion.div>
@@ -34,9 +38,9 @@ export default function Contact() {
             className="font-medium tracking-[-0.03em] leading-[1.04] text-on-ink mb-[18px]"
             style={{ fontSize: 'clamp(34px, 5vw, 56px)', textWrap: 'balance' } as React.CSSProperties}
           >
-            Looking for someone who ships?
+            {t.contact.title}
             <br />
-            <em className="not-italic text-emerald-300">Let&apos;s talk.</em>
+            <em className="not-italic text-emerald-300">{t.contact.accent}</em>
           </motion.h2>
 
           {/* Sub */}
@@ -44,8 +48,7 @@ export default function Contact() {
             variants={fadeUp}
             className="max-w-[560px] mx-auto mb-9 text-on-ink/62 text-[17px] leading-[1.55]"
           >
-            Open to Data Analytics, Management Consulting, and Management Trainee positions.
-            Available immediately — based in Surakarta, happy to relocate.
+            {t.contact.sub}
           </motion.p>
 
           {/* CTA buttons */}
@@ -55,7 +58,7 @@ export default function Contact() {
               className="inline-flex items-center gap-2 h-11 px-5 rounded-[10px] bg-emerald-100 text-emerald-900 text-sm font-medium hover:bg-white active:translate-y-px transition-all duration-160"
             >
               <Mail className="w-4 h-4" />
-              {profile.email}
+              {t.contact.email}
             </a>
             <a
               href={profile.linkedinUrl}
@@ -71,7 +74,7 @@ export default function Contact() {
               }}
             >
               <LinkedinIcon className="w-4 h-4" />
-              LinkedIn
+              {t.contact.linkedin}
             </a>
           </motion.div>
 
@@ -87,7 +90,7 @@ export default function Contact() {
             </span>
             <span className="inline-flex items-center gap-2">
               <Clock className="w-[13px] h-[13px]" />
-              Replies within 24h
+              {t.contact.repliesWithin}
             </span>
           </motion.div>
         </motion.div>

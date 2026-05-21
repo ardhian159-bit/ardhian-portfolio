@@ -5,6 +5,8 @@ import { ExternalLink, BadgeCheck, Activity, LayoutDashboard, Lock } from 'lucid
 import { GithubIcon } from '@/components/ui/brand-icons'
 import { fadeUp, stagger, viewport } from '@/lib/animations'
 import { projects, type ImpactVariant } from '@/lib/data'
+import { useLang } from '@/lib/i18n'
+import { content } from '@/lib/content'
 
 /* ─── Project thumbnail visuals ──────────────────────────────────────── */
 
@@ -157,7 +159,7 @@ const ImpactIcon = ({ icon }: { icon: string }) => {
 
 /* ─── Project card ────────────────────────────────────────────────────── */
 
-function ProjectCard({ project }: { project: typeof projects[number] }) {
+function ProjectCard({ project, text }: { project: typeof projects[number]; text: { title: string; division: string; impact: string; description: string; liveLabel: string; githubLabel: string } }) {
   const Thumb = project.slug === 'nsms' ? NSMSThumb : project.slug === 'sirup' ? SIRUPThumb : WarehouseThumb
 
   return (
@@ -175,19 +177,19 @@ function ProjectCard({ project }: { project: typeof projects[number] }) {
           <span className="font-mono text-[11px] text-ghost">{project.id}</span>
           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${impactStyles[project.impactVariant]}`}>
             <ImpactIcon icon={project.impactIcon} />
-            {project.impact}
+            {text.impact}
           </span>
         </div>
 
         <h3 className="text-xl font-semibold tracking-[-0.015em] text-ink mb-1.5">
-          {project.title}
+          {text.title}
         </h3>
         <div className="text-xs text-ghost mb-3.5 flex items-center gap-1.5">
           {project.org}
           <span className="text-line-strong">·</span>
-          {project.division}
+          {text.division}
         </div>
-        <p className="text-sm leading-[1.6] text-dim mb-5 flex-1">{project.description}</p>
+        <p className="text-sm leading-[1.6] text-dim mb-5 flex-1">{text.description}</p>
 
         {/* Stack pills */}
         <div className="flex flex-wrap gap-1.5 mb-4.5">
@@ -211,12 +213,12 @@ function ProjectCard({ project }: { project: typeof projects[number] }) {
               className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-[8px] text-xs font-medium bg-page text-ink border border-line hover:bg-ink hover:text-on-ink hover:border-ink transition-all duration-160"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              {project.liveLabel}
+              {text.liveLabel}
             </a>
           ) : (
             <span className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-[8px] text-xs font-medium bg-page text-ghost border border-line cursor-not-allowed">
               <Lock className="w-3.5 h-3.5" />
-              {project.liveLabel}
+              {text.liveLabel}
             </span>
           )}
           <a
@@ -226,7 +228,7 @@ function ProjectCard({ project }: { project: typeof projects[number] }) {
             className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-[8px] text-xs font-medium bg-page text-ink border border-line hover:bg-ink hover:text-on-ink hover:border-ink transition-all duration-160"
           >
             <GithubIcon className="w-3.5 h-3.5" />
-            {project.githubLabel}
+            {text.githubLabel}
           </a>
         </div>
       </div>
@@ -237,6 +239,8 @@ function ProjectCard({ project }: { project: typeof projects[number] }) {
 /* ─── Section ─────────────────────────────────────────────────────────── */
 
 export default function Projects() {
+  const { lang } = useLang()
+  const t = content[lang]
   return (
     <section className="py-24">
       <div className="mx-auto max-w-[1200px] px-6">
@@ -251,7 +255,7 @@ export default function Projects() {
           <motion.div variants={fadeUp} className="flex items-center gap-2 mb-3">
             <span className="inline-block w-6 h-px bg-emerald-300" />
             <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800">
-              Selected work
+              {t.projects.sectionLabel}
             </span>
           </motion.div>
           <motion.h2
@@ -259,11 +263,10 @@ export default function Projects() {
             className="font-medium tracking-[-0.025em] leading-[1.08] text-ink mb-0"
             style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', textWrap: 'balance' } as React.CSSProperties}
           >
-            Three systems, all shipped to <em className="not-italic text-emerald-800">real teams</em>.
+            {t.projects.sectionTitle} <em className="not-italic text-emerald-800">{t.projects.sectionAccent}</em>.
           </motion.h2>
           <motion.p variants={fadeUp} className="mt-3.5 max-w-[620px] text-dim text-base leading-[1.55]">
-            Each project started from a real operational problem and was adopted (or is being adopted)
-            as the primary tool — not a portfolio exercise. Stack, role, and outcome below.
+            {t.projects.sectionSub}
           </motion.p>
         </motion.div>
 
@@ -275,8 +278,8 @@ export default function Projects() {
           viewport={viewport}
           className="grid grid-cols-1 lg:grid-cols-3 gap-5"
         >
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+          {projects.map((project, i) => (
+            <ProjectCard key={project.slug} project={project} text={t.projects.items[i]} />
           ))}
         </motion.div>
       </div>

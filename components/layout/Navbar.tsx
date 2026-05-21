@@ -6,17 +6,21 @@ import { Download, Menu } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { profile } from '@/lib/data'
-
-const NAV_LINKS = [
-  { href: '#about', label: 'About' },
-  { href: '#work', label: 'Work' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#contact', label: 'Contact' },
-]
+import { useLang } from '@/lib/i18n'
+import { content } from '@/lib/content'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const { lang, setLang } = useLang()
+  const t = content[lang]
+
+  const NAV_LINKS = [
+    { href: '#about', label: t.nav.about },
+    { href: '#work', label: t.nav.work },
+    { href: '#experience', label: t.nav.experience },
+    { href: '#skills', label: t.nav.skills },
+    { href: '#contact', label: t.nav.contact },
+  ]
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -65,6 +69,33 @@ export default function Navbar() {
 
         {/* Desktop CTA + mobile burger */}
         <div className="flex items-center gap-3">
+          {/* Language toggle */}
+          <button
+            onClick={() => setLang(lang === "en" ? "id" : "en")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#EBEBEB] hover:bg-[#F5F5F2] transition-colors text-sm font-medium text-[#1A1A18]"
+          >
+            {lang === "en" ? (
+              <>
+                <svg className="w-5 h-[15px] rounded-[2px] overflow-hidden shrink-0" viewBox="0 0 20 15">
+                  <rect width="20" height="7.5" fill="#E70011" />
+                  <rect y="7.5" width="20" height="7.5" fill="#fff" />
+                </svg>
+                <span>ID</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-5 h-[15px] rounded-[2px] overflow-hidden shrink-0" viewBox="0 0 20 15">
+                  <rect width="20" height="15" fill="#012169" />
+                  <path d="M0,0 L20,15 M20,0 L0,15" stroke="#fff" strokeWidth="2.5" />
+                  <path d="M0,0 L20,15 M20,0 L0,15" stroke="#C8102E" strokeWidth="1.5" />
+                  <path d="M10,0 V15 M0,7.5 H20" stroke="#fff" strokeWidth="4" />
+                  <path d="M10,0 V15 M0,7.5 H20" stroke="#C8102E" strokeWidth="2.5" />
+                </svg>
+                <span>EN</span>
+              </>
+            )}
+          </button>
+
           <Button
             size="sm"
             asChild
@@ -72,7 +103,7 @@ export default function Navbar() {
           >
             <a href="/cv.pdf" download>
               <Download className="mr-2 h-4 w-4" />
-              Download CV
+              {t.nav.downloadCV}
             </a>
           </Button>
 
@@ -110,8 +141,36 @@ export default function Navbar() {
                     className="flex items-center gap-2 px-3 py-2.5 rounded-[8px] text-sm font-medium text-ink hover:bg-subtle transition-colors"
                   >
                     <Download className="w-4 h-4" />
-                    Download CV
+                    {t.nav.downloadCV}
                   </a>
+                </div>
+                {/* Mobile language toggle */}
+                <div className="mt-2">
+                  <button
+                    onClick={() => setLang(lang === "en" ? "id" : "en")}
+                    className="flex items-center gap-2 px-3 py-2.5 rounded-[8px] text-sm font-medium text-dim hover:text-ink hover:bg-subtle transition-colors w-full"
+                  >
+                    {lang === "en" ? (
+                      <>
+                        <svg className="w-5 h-[15px] rounded-[2px] overflow-hidden shrink-0" viewBox="0 0 20 15">
+                          <rect width="20" height="7.5" fill="#E70011" />
+                          <rect y="7.5" width="20" height="7.5" fill="#fff" />
+                        </svg>
+                        <span>Bahasa Indonesia</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-5 h-[15px] rounded-[2px] overflow-hidden shrink-0" viewBox="0 0 20 15">
+                          <rect width="20" height="15" fill="#012169" />
+                          <path d="M0,0 L20,15 M20,0 L0,15" stroke="#fff" strokeWidth="2.5" />
+                          <path d="M0,0 L20,15 M20,0 L0,15" stroke="#C8102E" strokeWidth="1.5" />
+                          <path d="M10,0 V15 M0,7.5 H20" stroke="#fff" strokeWidth="4" />
+                          <path d="M10,0 V15 M0,7.5 H20" stroke="#C8102E" strokeWidth="2.5" />
+                        </svg>
+                        <span>English</span>
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
             </SheetContent>
