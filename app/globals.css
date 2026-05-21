@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #1A1A18;
+  --primary-foreground: #ffffff;
+}
+
+@theme {
+  /* NSMS color tokens — warm paper palette lifted directly from production CRM */
+  --color-page: #F5F5F2;
+  --color-surface: #FFFFFF;
+  --color-subtle: #FAFAF8;
+  --color-ink: #1A1A18;
+  --color-dim: #6B6B65;
+  --color-ghost: #70706B;
+  --color-on-ink: #F5F5F2;
+  --color-on-brand: #D1FAE5;
+  --color-line: #EBEBE7;
+  --color-line-strong: #D9D9D2;
+
+  /* Fonts — set once here, referenced in layout via CSS variables from next/font */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Custom shadows — NSMS flat elevation system */
+  --shadow-xs: 0 1px 1px rgba(26, 26, 24, 0.04);
+  --shadow-sm: 0 1px 2px rgba(26, 26, 24, 0.05), 0 1px 1px rgba(26, 26, 24, 0.03);
+  --shadow-md: 0 4px 12px rgba(26, 26, 24, 0.06), 0 1px 2px rgba(26, 26, 24, 0.04);
+  --shadow-lg: 0 12px 30px rgba(26, 26, 24, 0.08), 0 2px 6px rgba(26, 26, 24, 0.04);
+  --shadow-brand: 0 12px 30px rgba(6, 78, 59, 0.18);
+
+  /* Easing — mirrors NSMS framer-motion easing */
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-quart: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  /* Base resets */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  a:not([class*="text-"]) {
+    color: inherit;
+  }
+}
+
+/* Dotted-grid pattern used in hero + contact sections */
+.dot-grid {
+  background-image: radial-gradient(circle, #DDDCD4 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.dot-grid-dark {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Open-to-work pulsing dot */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15); }
+  50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.05); }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* Hero cursor blink */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1.05s steps(2) infinite;
+}
+
+/* Count-up number animation — controlled by JS/Framer Motion */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

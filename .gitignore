@@ -1,0 +1,8 @@
+﻿node_modules/
+.next/
+.env
+.env.local
+*.png
+*.zip
+dev_output.html
+.claude/
