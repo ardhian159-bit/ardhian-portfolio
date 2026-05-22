@@ -18,13 +18,13 @@ const dmMono = DM_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Ardhian Caesar Hermawan — Data & Strategy",
+  title: "Ardhian Caesar Hermawan — Data & Strategy | Portfolio",
   description:
-    "Economics grad (3.85, Cum Laude) turned full-stack analyst. Building data systems that ship to production.",
+    "Economics grad (3.85, Cum Laude) turned full-stack analyst. I build data pipelines, CRM systems, and dashboards for real organisations in Indonesia.",
   openGraph: {
-    title: "Ardhian Caesar Hermawan — Data & Strategy",
+    title: "Ardhian Caesar Hermawan — Data & Strategy | Portfolio",
     description:
-      "Economics grad (3.85, Cum Laude) turned full-stack analyst. Building data systems that ship to production.",
+      "Economics grad (3.85, Cum Laude) turned full-stack analyst. I build data pipelines, CRM systems, and dashboards for real organisations in Indonesia.",
     url: "https://ardhian-portfolio.vercel.app",
     siteName: "Ardhian Caesar Hermawan",
     locale: "en_US",
@@ -32,9 +32,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ardhian Caesar Hermawan — Data & Strategy",
+    title: "Ardhian Caesar Hermawan — Data & Strategy | Portfolio",
     description:
-      "Economics grad (3.85, Cum Laude) turned full-stack analyst. Building data systems that ship to production.",
+      "Economics grad (3.85, Cum Laude) turned full-stack analyst. I build data pipelines, CRM systems, and dashboards for real organisations in Indonesia.",
   },
 }
 
