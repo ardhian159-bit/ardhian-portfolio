@@ -1,7 +1,8 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ExternalLink, BadgeCheck, Activity, LayoutDashboard, Lock } from 'lucide-react'
+import { ExternalLink, BadgeCheck, Activity, LayoutDashboard, Lock, ArrowUpRight, FlaskConical } from 'lucide-react'
 import { GithubIcon } from '@/components/ui/brand-icons'
 import { fadeUp, stagger, viewport } from '@/lib/animations'
 import { projects, type ImpactVariant } from '@/lib/data'
@@ -236,6 +237,98 @@ function ProjectCard({ project, text }: { project: typeof projects[number]; text
   )
 }
 
+/* ─── Situationship research paper card (internal route) ──────────────── */
+
+function SituationshipThumb() {
+  // Mini decay curve S(t) = 100·e^(-0.15t) with a threshold line
+  const pts = Array.from({ length: 15 }, (_, t) => {
+    const x = 6 + (t / 14) * 188
+    const y = 12 + (1 - Math.exp(-0.15 * t)) * 96
+    return `${x.toFixed(1)},${y.toFixed(1)}`
+  }).join(' ')
+  return (
+    <div className="h-[168px] bg-page border-b border-line overflow-hidden relative pt-8 px-3.5 pb-3">
+      <span className="absolute top-2.5 left-2.5 z-10 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/92 border border-line text-[10px] font-medium text-dim font-mono tracking-[0.02em]">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+        Read · /situationship
+      </span>
+      <span className="absolute top-2.5 right-3 font-mono text-[10px] text-ghost">2026</span>
+      <svg viewBox="0 0 200 120" className="w-full h-[118px]" preserveAspectRatio="none">
+        {/* threshold (ghosting event horizon) */}
+        <line x1="6" y1="93.6" x2="194" y2="93.6" stroke="#DC2626" strokeWidth="1" strokeDasharray="4 3" />
+        {/* decay curve */}
+        <polyline points={pts} fill="none" stroke="#1A1A18" strokeWidth="1.5" />
+        {/* t_d marker */}
+        <circle cx="150.1" cy="93.6" r="3" fill="#DC2626" />
+      </svg>
+      <div className="absolute bottom-2 left-3.5 font-mono text-[8px] text-ghost">S(t) = 100·e^(−0.15t)</div>
+      <div className="absolute bottom-2 right-3.5 font-mono text-[8px] text-[#DC2626]">t_d ≈ 10.73 wk</div>
+    </div>
+  )
+}
+
+function SituationshipCard() {
+  const tags = ['Game Theory', 'Bayesian', 'Monte Carlo', 'Next.js', 'LaTeX']
+  return (
+    <motion.article
+      variants={fadeUp}
+      className="bg-surface border border-line rounded-[12px] flex flex-col overflow-hidden group"
+      style={{ transition: 'transform 240ms cubic-bezier(0.22,1,0.36,1), box-shadow 240ms cubic-bezier(0.22,1,0.36,1), border-color 240ms cubic-bezier(0.22,1,0.36,1)' }}
+      whileHover={{ y: -2, boxShadow: 'var(--shadow-md)' }}
+    >
+      <SituationshipThumb />
+
+      <div className="p-[22px] flex flex-col flex-1">
+        {/* Meta row */}
+        <div className="flex items-center justify-between mb-3.5">
+          <span className="font-mono text-[11px] text-ghost">PAPER · 2026</span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#EFF6FF] text-[#2563EB]">
+            <FlaskConical className="w-3 h-3" />
+            Research · satire
+          </span>
+        </div>
+
+        <h3 className="text-xl font-semibold tracking-[-0.015em] text-ink mb-1.5">
+          Optimal Stopping in Romantic Ambiguity
+        </h3>
+        <div className="text-xs text-ghost mb-3.5 flex items-center gap-1.5">
+          Universitas Negeri Malang
+          <span className="text-line-strong">·</span>
+          Independent
+        </div>
+        <p className="text-sm leading-[1.6] text-dim mb-5 flex-1">
+          Satirical-but-rigorous economics paper modeling situationship dynamics using Nash
+          equilibrium, Bayesian inference, and Monte Carlo simulation of 10,000 relationship
+          trajectories.
+        </p>
+
+        {/* Stack pills */}
+        <div className="flex flex-wrap gap-1.5 mb-4.5">
+          {tags.map((s) => (
+            <span
+              key={s}
+              className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-page text-dim border border-line"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+
+        {/* Links */}
+        <div className="flex gap-1.5 mt-auto pt-3.5 border-t border-line">
+          <Link
+            href="/situationship"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-[8px] text-xs font-medium bg-page text-ink border border-line hover:bg-ink hover:text-on-ink hover:border-ink transition-all duration-160"
+          >
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            Read the paper
+          </Link>
+        </div>
+      </div>
+    </motion.article>
+  )
+}
+
 /* ─── Section ─────────────────────────────────────────────────────────── */
 
 export default function Projects() {
@@ -281,6 +374,7 @@ export default function Projects() {
           {projects.map((project, i) => (
             <ProjectCard key={project.slug} project={project} text={t.projects.items[i]} />
           ))}
+          <SituationshipCard />
         </motion.div>
       </div>
     </section>
