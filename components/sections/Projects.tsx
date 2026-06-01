@@ -329,6 +329,100 @@ function SituationshipCard() {
   )
 }
 
+/* ─── DuckDB analysis card (internal route) ──────────────────────────── */
+
+function DuckDBThumb() {
+  // Mini horizontal bar chart mimicking the ghost-school gaji chart
+  const bars = [
+    { label: 'Jawa Timur', pct: 100 },
+    { label: 'Papua Peg.', pct: 77 },
+    { label: 'Papua', pct: 77 },
+    { label: 'Jambi', pct: 73 },
+    { label: 'Maluku Utara', pct: 50 },
+  ]
+  return (
+    <div className="h-[168px] bg-page border-b border-line overflow-hidden relative pt-8 px-3.5 pb-3">
+      <span className="absolute top-2.5 left-2.5 z-10 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/92 border border-line text-[10px] font-medium text-dim font-mono tracking-[0.02em]">
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
+        DuckDB · 450K sekolah
+      </span>
+      <span className="absolute top-2.5 right-3 font-mono text-[10px] text-ghost">2026</span>
+      <div className="mt-1 space-y-[5px]">
+        {bars.map((b) => (
+          <div key={b.label} className="flex items-center gap-2">
+            <span className="w-[62px] shrink-0 text-[8px] text-ghost font-mono truncate">{b.label}</span>
+            <div className="flex-1 h-[8px] bg-surface rounded-[2px] overflow-hidden">
+              <div className="h-full rounded-[2px] bg-ink" style={{ width: `${b.pct}%` }} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="absolute bottom-2.5 left-3.5 font-mono text-[8px] text-ghost">47 sekolah hantu · Rp 788 jt/bln</div>
+    </div>
+  )
+}
+
+function DuckDBCard() {
+  const tags = ['DuckDB', 'Python', 'Dapodik', 'Data Analysis']
+  return (
+    <motion.article
+      variants={fadeUp}
+      className="bg-surface border border-line rounded-[12px] flex flex-col overflow-hidden group"
+      style={{ transition: 'transform 240ms cubic-bezier(0.22,1,0.36,1), box-shadow 240ms cubic-bezier(0.22,1,0.36,1), border-color 240ms cubic-bezier(0.22,1,0.36,1)' }}
+      whileHover={{ y: -2, boxShadow: 'var(--shadow-md)' }}
+    >
+      <DuckDBThumb />
+
+      <div className="p-[22px] flex flex-col flex-1">
+        {/* Meta row */}
+        <div className="flex items-center justify-between mb-3.5">
+          <span className="font-mono text-[11px] text-ghost">ANALYSIS · 2026</span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-amber-50 text-amber-800">
+            <Activity className="w-3 h-3" />
+            Open data
+          </span>
+        </div>
+
+        <h3 className="text-xl font-semibold tracking-[-0.015em] text-ink mb-1.5">
+          Analisis 450K Sekolah Indonesia
+        </h3>
+        <div className="text-xs text-ghost mb-3.5 flex items-center gap-1.5">
+          Kemendikbud Dapodik
+          <span className="text-line-strong">·</span>
+          Independent
+        </div>
+        <p className="text-sm leading-[1.6] text-dim mb-5 flex-1">
+          Menemukan sekolah hantu, guru terdampar, dan ketimpangan beban mengajar dalam data
+          Dapodik nasional menggunakan DuckDB dan Python.
+        </p>
+
+        {/* Stack pills */}
+        <div className="flex flex-wrap gap-1.5 mb-4.5">
+          {tags.map((s) => (
+            <span
+              key={s}
+              className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-page text-dim border border-line"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+
+        {/* Links */}
+        <div className="flex gap-1.5 mt-auto pt-3.5 border-t border-line">
+          <Link
+            href="/duckdb"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-[8px] text-xs font-medium bg-page text-ink border border-line hover:bg-ink hover:text-on-ink hover:border-ink transition-all duration-160"
+          >
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            Baca analisis
+          </Link>
+        </div>
+      </div>
+    </motion.article>
+  )
+}
+
 /* ─── Section ─────────────────────────────────────────────────────────── */
 
 export default function Projects() {
@@ -375,6 +469,7 @@ export default function Projects() {
             <ProjectCard key={project.slug} project={project} text={t.projects.items[i]} />
           ))}
           <SituationshipCard />
+          <DuckDBCard />
         </motion.div>
       </div>
     </section>
