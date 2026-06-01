@@ -167,47 +167,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Mobile bottom nav (NSMS-style FAB) */}
-      <MobileBottomNav />
     </section>
-  )
-}
-
-function MobileBottomNav() {
-  const items = [
-    { href: '#about', icon: '☰', label: 'About' },
-    { href: '#work', icon: '◫', label: 'Work' },
-  ]
-  return (
-    <nav
-      className="md:hidden fixed bottom-4 left-4 right-4 z-50 bg-surface border border-line rounded-[18px] p-2 flex items-center justify-around"
-      style={{ boxShadow: 'var(--shadow-lg)' }}
-      aria-label="Quick navigation"
-    >
-      <a href="#about" className="flex flex-col items-center gap-0.5 flex-1 py-1.5 text-[10px] text-ghost font-medium hover:text-ink transition-colors">
-        <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.75} viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M6 21v-1a6 6 0 0 1 12 0v1"/></svg>
-        About
-      </a>
-      <a href="#work" className="flex flex-col items-center gap-0.5 flex-1 py-1.5 text-[10px] text-ghost font-medium hover:text-ink transition-colors">
-        <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.75} viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg>
-        Work
-      </a>
-      <a
-        href="#top"
-        className="w-12 h-12 rounded-[14px] bg-emerald-900 text-emerald-100 grid place-items-center font-mono font-medium text-sm shrink-0 -mt-[22px]"
-        style={{ boxShadow: 'var(--shadow-brand)' }}
-        aria-label="Back to top"
-      >
-        AC
-      </a>
-      <a href="#experience" className="flex flex-col items-center gap-0.5 flex-1 py-1.5 text-[10px] text-ghost font-medium hover:text-ink transition-colors">
-        <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.75} viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-        Exp
-      </a>
-      <a href="#contact" className="flex flex-col items-center gap-0.5 flex-1 py-1.5 text-[10px] text-ghost font-medium hover:text-ink transition-colors">
-        <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth={1.75} viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>
-        Contact
-      </a>
-    </nav>
   )
 }
