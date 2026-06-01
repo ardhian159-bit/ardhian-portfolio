@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Download, Menu } from 'lucide-react'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { profile } from '@/lib/data'
 import { useLang } from '@/lib/i18n'
@@ -118,6 +118,7 @@ export default function Navbar() {
               </button>
             </SheetTrigger>
             <SheetContent>
+              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <div className="pt-14 px-6 flex flex-col gap-1">
                 <div className="flex items-center gap-2 mb-6">
                   <span className="w-8 h-8 rounded-[6px] bg-emerald-900 text-emerald-100 font-mono font-medium text-xs grid place-items-center">
