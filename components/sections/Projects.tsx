@@ -267,7 +267,7 @@ function SituationshipThumb() {
   )
 }
 
-function SituationshipCard() {
+function SituationshipCard({ text }: { text: PassionCardText }) {
   const tags = ['Game Theory', 'Bayesian', 'Monte Carlo', 'Next.js', 'LaTeX']
   return (
     <motion.article
@@ -281,26 +281,22 @@ function SituationshipCard() {
       <div className="p-[22px] flex flex-col flex-1">
         {/* Meta row */}
         <div className="flex items-center justify-between mb-3.5">
-          <span className="font-mono text-[11px] text-ghost">PAPER · 2026</span>
+          <span className="font-mono text-[11px] text-ghost">{text.metaId}</span>
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#EFF6FF] text-[#2563EB]">
             <FlaskConical className="w-3 h-3" />
-            Research · satire
+            {text.impactLabel}
           </span>
         </div>
 
         <h3 className="text-xl font-semibold tracking-[-0.015em] text-ink mb-1.5">
-          Optimal Stopping in Romantic Ambiguity
+          {text.title}
         </h3>
         <div className="text-xs text-ghost mb-3.5 flex items-center gap-1.5">
-          Universitas Negeri Malang
+          {text.org}
           <span className="text-line-strong">·</span>
-          Independent
+          {text.division}
         </div>
-        <p className="text-sm leading-[1.6] text-dim mb-5 flex-1">
-          Satirical-but-rigorous economics paper modeling situationship dynamics using Nash
-          equilibrium, Bayesian inference, and Monte Carlo simulation of 10,000 relationship
-          trajectories.
-        </p>
+        <p className="text-sm leading-[1.6] text-dim mb-5 flex-1">{text.description}</p>
 
         {/* Stack pills */}
         <div className="flex flex-wrap gap-1.5 mb-4.5">
@@ -321,12 +317,24 @@ function SituationshipCard() {
             className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-[8px] text-xs font-medium bg-page text-ink border border-line hover:bg-ink hover:text-on-ink hover:border-ink transition-all duration-160"
           >
             <ArrowUpRight className="w-3.5 h-3.5" />
-            Read the paper
+            {text.buttonLabel}
           </Link>
         </div>
       </div>
     </motion.article>
   )
+}
+
+/* ─── Shared type for passion card text ──────────────────────────────── */
+
+type PassionCardText = {
+  metaId: string
+  impactLabel: string
+  title: string
+  org: string
+  division: string
+  description: string
+  buttonLabel: string
 }
 
 /* ─── DuckDB analysis card (internal route) ──────────────────────────── */
@@ -362,7 +370,7 @@ function DuckDBThumb() {
   )
 }
 
-function DuckDBCard() {
+function DuckDBCard({ text }: { text: PassionCardText }) {
   const tags = ['DuckDB', 'Python', 'Dapodik', 'Data Analysis']
   return (
     <motion.article
@@ -376,25 +384,22 @@ function DuckDBCard() {
       <div className="p-[22px] flex flex-col flex-1">
         {/* Meta row */}
         <div className="flex items-center justify-between mb-3.5">
-          <span className="font-mono text-[11px] text-ghost">ANALYSIS · 2026</span>
+          <span className="font-mono text-[11px] text-ghost">{text.metaId}</span>
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-amber-50 text-amber-800">
             <Activity className="w-3 h-3" />
-            Open data
+            {text.impactLabel}
           </span>
         </div>
 
         <h3 className="text-xl font-semibold tracking-[-0.015em] text-ink mb-1.5">
-          Analisis 450K Sekolah Indonesia
+          {text.title}
         </h3>
         <div className="text-xs text-ghost mb-3.5 flex items-center gap-1.5">
-          Kemendikbud Dapodik
+          {text.org}
           <span className="text-line-strong">·</span>
-          Independent
+          {text.division}
         </div>
-        <p className="text-sm leading-[1.6] text-dim mb-5 flex-1">
-          Menemukan sekolah hantu, guru terdampar, dan ketimpangan beban mengajar dalam data
-          Dapodik nasional menggunakan DuckDB dan Python.
-        </p>
+        <p className="text-sm leading-[1.6] text-dim mb-5 flex-1">{text.description}</p>
 
         {/* Stack pills */}
         <div className="flex flex-wrap gap-1.5 mb-4.5">
@@ -415,7 +420,7 @@ function DuckDBCard() {
             className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-[8px] text-xs font-medium bg-page text-ink border border-line hover:bg-ink hover:text-on-ink hover:border-ink transition-all duration-160"
           >
             <ArrowUpRight className="w-3.5 h-3.5" />
-            Baca analisis
+            {text.buttonLabel}
           </Link>
         </div>
       </div>
@@ -457,7 +462,7 @@ export default function Projects() {
           </motion.p>
         </motion.div>
 
-        {/* Project grid */}
+        {/* Work projects grid */}
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -468,8 +473,41 @@ export default function Projects() {
           {projects.map((project, i) => (
             <ProjectCard key={project.slug} project={project} text={t.projects.items[i]} />
           ))}
-          <SituationshipCard />
-          <DuckDBCard />
+        </motion.div>
+
+        {/* Passion section header */}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
+          className="mt-20 mb-10"
+        >
+          <motion.div variants={fadeUp} className="flex items-center gap-2 mb-3">
+            <span className="inline-block w-6 h-px bg-emerald-300" />
+            <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-emerald-800">
+              {t.projects.passionLabel}
+            </span>
+          </motion.div>
+          <motion.h2
+            variants={fadeUp}
+            className="font-medium tracking-[-0.025em] leading-[1.08] text-ink"
+            style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', textWrap: 'balance' } as React.CSSProperties}
+          >
+            {t.projects.passionTitle} <em className="not-italic text-emerald-800">{t.projects.passionAccent}</em>.
+          </motion.h2>
+        </motion.div>
+
+        {/* Passion projects grid */}
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewport}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-5"
+        >
+          <SituationshipCard text={t.projects.passion[0]} />
+          <DuckDBCard text={t.projects.passion[1]} />
         </motion.div>
       </div>
     </section>
