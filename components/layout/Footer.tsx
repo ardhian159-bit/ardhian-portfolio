@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { profile } from '@/lib/data'
 import { useLang } from '@/lib/i18n'
 import { content } from '@/lib/content'
@@ -17,6 +18,14 @@ export default function Footer() {
           <span>
             {profile.name} · {profile.location} · © 2026
           </span>
+          {/* Easter egg — unlisted /piano route. Intentionally near-invisible. */}
+          <Link
+            href="/piano"
+            aria-label="A quiet song"
+            className="text-[#D4D4D0] hover:text-ghost transition-colors duration-300 select-none"
+          >
+            ♪
+          </Link>
         </div>
 
         <div className="flex items-center gap-4">
