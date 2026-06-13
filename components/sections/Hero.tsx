@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Mail, MapPin, ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -54,11 +55,8 @@ export default function Hero() {
               style={{ fontSize: 'clamp(40px, 6.4vw, 76px)', textWrap: 'balance' } as React.CSSProperties}
             >
               {t.hero.headline1}{' '}
-              <em className="not-italic text-emerald-800">
-                {t.hero.headlineAccent}
-                <span
-                  className="cursor-blink inline-block w-[0.06em] h-[0.8em] bg-emerald-800 ml-[0.06em] align-[-0.05em]"
-                />
+              <em className="not-italic text-emerald-800 whitespace-nowrap">
+                <Typewriter key={lang} words={t.hero.headlineCycle} />
               </em>
               <br />
               {t.hero.headline2}
@@ -168,5 +166,37 @@ export default function Hero() {
       </div>
 
     </section>
+  )
+}
+
+// Cycles the headline accent through real use-case phrases with a type/delete
+// effect. Honours prefers-reduced-motion (stays on the first phrase).
+function Typewriter({ words }: { words: string[] }) {
+  const [index, setIndex] = useState(0)
+  const [sub, setSub] = useState(words[0]?.length ?? 0)
+  const [deleting, setDeleting] = useState(false)
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const word = words[index % words.length] ?? ''
+    if (!deleting && sub === word.length) {
+      const t = window.setTimeout(() => setDeleting(true), 1800)
+      return () => clearTimeout(t)
+    }
+    if (deleting && sub === 0) {
+      setDeleting(false)
+      setIndex((v) => (v + 1) % words.length)
+      return
+    }
+    const t = window.setTimeout(() => setSub((v) => v + (deleting ? -1 : 1)), deleting ? 40 : 75)
+    return () => clearTimeout(t)
+  }, [sub, deleting, index, words])
+
+  const word = words[index % words.length] ?? ''
+  return (
+    <>
+      {word.slice(0, sub)}
+      <span className="cursor-blink inline-block w-[0.06em] h-[0.8em] bg-emerald-800 ml-[0.06em] align-[-0.05em]" />
+    </>
   )
 }
