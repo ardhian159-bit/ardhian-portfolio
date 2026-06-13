@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ExternalLink, BadgeCheck, Activity, LayoutDashboard, Lock, ArrowUpRight, FlaskConical } from 'lucide-react'
+import { ExternalLink, BadgeCheck, Activity, LayoutDashboard, Lock, ArrowUpRight, FlaskConical, TrendingUp } from 'lucide-react'
 import { GithubIcon } from '@/components/ui/brand-icons'
 import { fadeUp, stagger, viewport } from '@/lib/animations'
 import { projects, type ImpactVariant } from '@/lib/data'
@@ -428,6 +428,91 @@ function DuckDBCard({ text }: { text: PassionCardText }) {
   )
 }
 
+/* ─── JGB transmission research card (internal route) ────────────────── */
+
+function JGBThumb() {
+  // Mini Monte Carlo overshoot fan: stable median, widening band, 18k threshold
+  return (
+    <div className="h-[168px] bg-page border-b border-line overflow-hidden relative pt-8 px-3.5 pb-3">
+      <span className="absolute top-2.5 left-2.5 z-10 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/92 border border-line text-[10px] font-medium text-dim font-mono tracking-[0.02em]">
+        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+        VECM · Monte Carlo
+      </span>
+      <span className="absolute top-2.5 right-3 font-mono text-[10px] text-ghost">2026</span>
+      <svg viewBox="0 0 200 100" className="w-full h-[104px]" preserveAspectRatio="none">
+        {/* 90% band */}
+        <polygon points="6,58 194,28 194,92 6,62" fill="#D4D4D0" opacity="0.6" />
+        {/* threshold 18.000 */}
+        <line x1="6" y1="22" x2="194" y2="22" stroke="#C0392B" strokeWidth="1" strokeDasharray="4 3" />
+        {/* stress path rising toward threshold */}
+        <polyline points="6,60 60,48 120,36 194,26" fill="none" stroke="#C0392B" strokeWidth="1.3" />
+        {/* median */}
+        <line x1="6" y1="60" x2="194" y2="60" stroke="#1A1A18" strokeWidth="1.5" />
+      </svg>
+      <div className="absolute bottom-2 left-3.5 font-mono text-[8px] text-ghost">USD/IDR · proyeksi 30 hari</div>
+      <div className="absolute bottom-2 right-3.5 font-mono text-[8px] text-[#C0392B]">18.000 ▲</div>
+    </div>
+  )
+}
+
+function JGBCard({ text }: { text: PassionCardText }) {
+  const tags = ['VECM', 'Bayesian', 'Monte Carlo', 'Python']
+  return (
+    <motion.article
+      variants={fadeUp}
+      className="bg-surface border border-line rounded-[12px] flex flex-col overflow-hidden group"
+      style={{ transition: 'transform 240ms cubic-bezier(0.22,1,0.36,1), box-shadow 240ms cubic-bezier(0.22,1,0.36,1), border-color 240ms cubic-bezier(0.22,1,0.36,1)' }}
+      whileHover={{ y: -2, boxShadow: 'var(--shadow-md)' }}
+    >
+      <JGBThumb />
+
+      <div className="p-[22px] flex flex-col flex-1">
+        {/* Meta row */}
+        <div className="flex items-center justify-between mb-3.5">
+          <span className="font-mono text-[11px] text-ghost">{text.metaId}</span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-rose-50 text-rose-700">
+            <TrendingUp className="w-3 h-3" />
+            {text.impactLabel}
+          </span>
+        </div>
+
+        <h3 className="text-xl font-semibold tracking-[-0.015em] text-ink mb-1.5">
+          {text.title}
+        </h3>
+        <div className="text-xs text-ghost mb-3.5 flex items-center gap-1.5">
+          {text.org}
+          <span className="text-line-strong">·</span>
+          {text.division}
+        </div>
+        <p className="text-sm leading-[1.6] text-dim mb-5 flex-1">{text.description}</p>
+
+        {/* Stack pills */}
+        <div className="flex flex-wrap gap-1.5 mb-4.5">
+          {tags.map((s) => (
+            <span
+              key={s}
+              className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-page text-dim border border-line"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+
+        {/* Links */}
+        <div className="flex gap-1.5 mt-auto pt-3.5 border-t border-line">
+          <Link
+            href="/jgb"
+            className="flex-1 inline-flex items-center justify-center gap-1.5 h-9 rounded-[8px] text-xs font-medium bg-page text-ink border border-line hover:bg-ink hover:text-on-ink hover:border-ink transition-all duration-160"
+          >
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            {text.buttonLabel}
+          </Link>
+        </div>
+      </div>
+    </motion.article>
+  )
+}
+
 /* ─── Section ─────────────────────────────────────────────────────────── */
 
 export default function Projects() {
@@ -504,10 +589,11 @@ export default function Projects() {
           initial="hidden"
           whileInView="visible"
           viewport={viewport}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-5"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-5"
         >
           <SituationshipCard text={t.projects.passion[0]} />
           <DuckDBCard text={t.projects.passion[1]} />
+          <JGBCard text={t.projects.passion[2]} />
         </motion.div>
       </div>
     </section>
