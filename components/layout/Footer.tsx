@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { AcMark } from '@/components/ui/brand-icons'
 import { profile } from '@/lib/data'
 import { useLang } from '@/lib/i18n'
 import { content } from '@/lib/content'
@@ -12,9 +13,7 @@ export default function Footer() {
     <footer className="bg-page border-t border-line py-7" style={{ paddingBottom: 'max(28px, env(safe-area-inset-bottom))' }}>
       <div className="mx-auto max-w-[1200px] px-6 flex flex-wrap items-center justify-between gap-4 text-xs text-ghost">
         <div className="flex items-center gap-2.5">
-          <span className="w-[22px] h-[22px] rounded-[6px] bg-emerald-900 text-emerald-100 font-mono text-[10px] grid place-items-center">
-            AC
-          </span>
+          <AcMark className="w-[22px] h-[22px] shrink-0" />
           <span>
             {profile.name} · {profile.location} · © 2026
           </span>

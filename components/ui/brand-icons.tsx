@@ -23,3 +23,43 @@ export function LinkedinIcon({ className }: { className?: string }) {
     </svg>
   )
 }
+
+// Emerald glassmorphism "AC" monogram — matches the favicon (app/icon.svg).
+export function AcMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 64 64" className={className} aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ac-bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#0B7A5B" />
+          <stop offset="0.55" stopColor="#065F46" />
+          <stop offset="1" stopColor="#053D32" />
+        </linearGradient>
+        <linearGradient id="ac-glass" x1="0.12" y1="0" x2="0.62" y2="1">
+          <stop offset="0" stopColor="#ffffff" stopOpacity="0.34" />
+          <stop offset="0.5" stopColor="#ffffff" stopOpacity="0.05" />
+          <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+        <radialGradient id="ac-spec" cx="0.32" cy="0.2" r="0.62">
+          <stop offset="0" stopColor="#ffffff" stopOpacity="0.5" />
+          <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#ac-bg)" />
+      <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#ac-glass)" />
+      <ellipse cx="24" cy="15" rx="24" ry="13" fill="url(#ac-spec)" />
+      <rect x="3" y="3" width="58" height="58" rx="15" fill="none" stroke="#ffffff" strokeOpacity="0.28" strokeWidth="1.4" />
+      <text
+        x="32"
+        y="42"
+        textAnchor="middle"
+        fontFamily="-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif"
+        fontSize="30"
+        fontWeight="600"
+        letterSpacing="-1.5"
+        fill="#ECFDF5"
+      >
+        AC
+      </text>
+    </svg>
+  )
+}

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Download, Menu } from 'lucide-react'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { AcMark } from '@/components/ui/brand-icons'
 import { Button } from '@/components/ui/button'
 import { profile } from '@/lib/data'
 import { useLang } from '@/lib/i18n'
@@ -42,15 +43,10 @@ export default function Navbar() {
       <div className="mx-auto max-w-[1200px] px-6 h-16 flex items-center justify-between">
         {/* Brand */}
         <Link href="#top" className="flex items-center gap-3">
-          <span
-            className="w-9 h-9 rounded-[8px] bg-emerald-900 text-emerald-100 font-mono font-medium text-[13px] grid place-items-center tracking-[0.02em] shrink-0"
-            style={{ boxShadow: '0 1px 0 rgba(255,255,255,0.06) inset' }}
-          >
-            AC
-          </span>
+          <AcMark className="w-9 h-9 shrink-0" />
           <span className="text-sm font-medium tracking-[-0.01em] text-ink">
-            {profile.name.split(' ')[0]} {profile.name.split(' ')[1]}{' '}
-            <span className="text-ghost font-normal">/ {profile.tagline}</span>
+            {profile.name}{' '}
+            <span className="hidden sm:inline text-ghost font-normal">/ {profile.tagline}</span>
           </span>
         </Link>
 
@@ -121,10 +117,8 @@ export default function Navbar() {
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <div className="pt-14 px-6 flex flex-col gap-1">
                 <div className="flex items-center gap-2 mb-6">
-                  <span className="w-8 h-8 rounded-[6px] bg-emerald-900 text-emerald-100 font-mono font-medium text-xs grid place-items-center">
-                    AC
-                  </span>
-                  <span className="text-sm font-medium text-ink">{profile.tagline}</span>
+                  <AcMark className="w-8 h-8 shrink-0" />
+                  <span className="text-sm font-medium text-ink">{profile.name}</span>
                 </div>
                 {NAV_LINKS.map((link) => (
                   <a
