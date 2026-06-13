@@ -183,6 +183,30 @@ export const skills = {
   ],
 }
 
+// Short, layperson-friendly descriptions for jargon skills (shown on hover/tap).
+// Common skills (Python, SQL) are intentionally omitted — no tooltip rendered.
+export const skillDescriptions: Record<string, { en: string; id: string }> = {
+  Python: { en: 'General-purpose programming language', id: 'Bahasa pemrograman serbaguna' },
+  SQL: { en: 'Database query language', id: 'Bahasa query database' },
+  R: { en: 'Statistical computing language', id: 'Bahasa pemrograman statistik' },
+  EViews: { en: 'Econometrics & forecasting software', id: 'Software ekonometrika & peramalan' },
+  DuckDB: { en: 'Fast in-process analytics database', id: 'Database analitik super cepat' },
+  pandas: { en: 'Python data-analysis library', id: 'Library analisis data Python' },
+  BeautifulSoup: { en: 'Python web-scraping library', id: 'Library scraping web Python' },
+  Econometrics: { en: 'Statistics applied to economics', id: 'Statistika untuk data ekonomi' },
+  Tableau: { en: 'Data visualization & dashboards', id: 'Visualisasi data & dashboard' },
+  'Power BI': { en: 'Microsoft BI & dashboards', id: 'Dashboard & BI dari Microsoft' },
+  'Chart.js': { en: 'JavaScript charting library', id: 'Library grafik JavaScript' },
+  Recharts: { en: 'React charting library', id: 'Library grafik untuk React' },
+  'Next.js': { en: 'React web framework', id: 'Framework web berbasis React' },
+  Supabase: { en: 'Backend & database platform', id: 'Platform backend & database' },
+  PostgreSQL: { en: 'Open-source SQL database', id: 'Database SQL open-source' },
+  TypeScript: { en: 'JavaScript with type safety', id: 'JavaScript dengan tipe data' },
+  'Tailwind CSS': { en: 'Utility-first CSS framework', id: 'Framework CSS utility-first' },
+  'Framer Motion': { en: 'React animation library', id: 'Library animasi untuk React' },
+  Vercel: { en: 'Web hosting & deployment', id: 'Hosting & deployment web' },
+}
+
 export const certifications = [
   {
     title: 'Business Intelligence with Tableau',
