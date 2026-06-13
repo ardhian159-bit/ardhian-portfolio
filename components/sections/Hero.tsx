@@ -13,6 +13,9 @@ import { content } from '@/lib/content'
 export default function Hero() {
   const { lang } = useLang()
   const t = content[lang]
+  // Reserve the width of the longest phrase so the cycling word never resizes
+  // the headline (which would shift the photo beside it on desktop).
+  const longestAccent = t.hero.headlineCycle.reduce((a, b) => (b.length > a.length ? b : a), '')
   return (
     <section
       id="about"
@@ -54,9 +57,14 @@ export default function Hero() {
               className="mt-6 mb-5 font-sans font-medium leading-[0.98] tracking-[-0.035em] text-ink"
               style={{ fontSize: 'clamp(40px, 6.4vw, 76px)', textWrap: 'balance' } as React.CSSProperties}
             >
-              {t.hero.headline1}{' '}
-              <em className="not-italic text-emerald-800 whitespace-nowrap">
-                <Typewriter key={lang} words={t.hero.headlineCycle} />
+              {t.hero.headline1}
+              <br />
+              <em className="not-italic text-emerald-800 whitespace-nowrap inline-block relative align-top">
+                {/* invisible sizer = widest phrase → fixed-width box, no reflow */}
+                <span aria-hidden className="invisible">{longestAccent}</span>
+                <span className="absolute inset-0">
+                  <Typewriter key={lang} words={t.hero.headlineCycle} />
+                </span>
               </em>
               <br />
               {t.hero.headline2}
