@@ -1,11 +1,15 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   AreaChart,
   Area,
   LineChart,
   Line,
+  BarChart,
+  Bar,
+  LabelList,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -14,7 +18,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import type { LucideIcon } from 'lucide-react'
-import { Database, Activity, ShieldCheck, ExternalLink, FileDown } from 'lucide-react'
+import { Database, Activity, ShieldCheck, ExternalLink, FileDown, Layers } from 'lucide-react'
 
 // ─── Colors / shared styles ───────────────────────────────────────────────────
 const INK = '#1A1A18'
@@ -115,11 +119,10 @@ function corrCell(v: number | null): { bg: string; color: string; text: string }
   return { bg, color: INK, text }
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
-export default function JGBPage() {
+// ─── Tab 1: Studi Awal (Januari 2026) ────────────────────────────────────────
+function TabV1() {
   return (
-    <main className="bg-[#F5F5F2] text-[#1A1A18] antialiased font-[family-name:var(--font-dm-sans)]">
-      <div className="max-w-[720px] mx-auto px-6 py-24">
+    <>
 
         {/* ── Hero ── */}
         <motion.section
@@ -454,7 +457,289 @@ export default function JGBPage() {
             </a>
           </div>
         </motion.section>
+    </>
+  )
+}
 
+// ─── Tab 2 data (real-data, FEVD) ─────────────────────────────────────────────
+const fevdLabels: Record<string, string> = {
+  own: 'USD/IDR (idiosinkratik)',
+  dxy: 'DXY (dolar)',
+  vix: 'VIX (risiko)',
+  sbn: 'SBN',
+  jgb: 'JGB',
+}
+const fevdColors: Record<string, string> = {
+  own: '#D4D4D0',
+  dxy: '#1f3b57',
+  vix: '#C0392B',
+  sbn: '#E0B050',
+  jgb: '#2c7fb8',
+}
+const fevdData = [
+  { hari: 1, own: 70, dxy: 15, vix: 1, sbn: 13, jgb: 1 },
+  { hari: 3, own: 64, dxy: 19, vix: 3, sbn: 12, jgb: 2 },
+  { hari: 6, own: 56, dxy: 24, vix: 7, sbn: 11, jgb: 2 },
+  { hari: 10, own: 51, dxy: 26, vix: 10, sbn: 11, jgb: 2 },
+  { hari: 15, own: 49, dxy: 27, vix: 12, sbn: 10, jgb: 2 },
+  { hari: 20, own: 47, dxy: 28, vix: 13, sbn: 9, jgb: 3 },
+  { hari: 25, own: 45, dxy: 29, vix: 14, sbn: 9, jgb: 3 },
+  { hari: 30, own: 44, dxy: 30, vix: 15, sbn: 8, jgb: 3 },
+]
+const johansenBars = [
+  { name: 'Baseline (4 var)', trace: 46.6 },
+  { name: '+ VIX (5 var)', trace: 92.4 },
+]
+const mcV2Data = Array.from({ length: 11 }, (_, k) => {
+  const t = k * 3
+  const f = t / 30
+  const um = Math.round(17690 - 1508 * f)
+  const cm = Math.round(17690 - 1014 * f)
+  const bw = 80 + 450 * f
+  return { hari: t, uncondMed: um, condMed: cm, band: [Math.round(um - bw), Math.round(um + bw)] as [number, number] }
+})
+const fevdStat = [
+  { value: '3%', label: 'varians USD/IDR dijelaskan JGB (h=30)' },
+  { value: '30%', label: 'oleh dolar (DXY)' },
+  { value: '15%', label: 'oleh risiko (VIX) — naik dari 1%' },
+]
+const metodologiV2: MetodologiItem[] = [
+  {
+    Icon: Database,
+    title: 'Data Asli',
+    body: 'Yield 10Y langsung JGB & SBN (investing.com) + USD/IDR (Alpha Vantage), DXY & VIX (FRED). 2.650 hari, 2016–2026 — bukan proxy ETF lagi.',
+  },
+  {
+    Icon: Layers,
+    title: 'Model',
+    body: 'VECM 5 variabel (rank kointegrasi data-driven), FEVD untuk membobot tiap kanal, Monte Carlo dari dinamika VECM, dan Bayesian directional.',
+  },
+  {
+    Icon: ShieldCheck,
+    title: 'Robustness',
+    body: 'Kontrol oil, stabilitas lintas rezim BoJ, sensitivitas lag/rank, Granger first-difference. Temuan inti bertahan di semua uji.',
+  },
+]
+
+// ─── Tab 2: Revisi Multi-Faktor (Juni 2026) ──────────────────────────────────
+function TabV2() {
+  return (
+    <>
+      {/* Hero */}
+      <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }}>
+        <p className="text-xs font-mono tracking-widest uppercase text-[#6B6B6B] mb-4">
+          Revisi · Yield Asli &amp; Dekomposisi Varians
+        </p>
+        <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-4">
+          JGB Cuma 3%. Yang Menggerakkan Rupiah Justru Dolar &amp; Risiko.
+        </h1>
+        <p className="text-lg text-[#6B6B6B] max-w-prose leading-relaxed">
+          Dengan yield asli (bukan proxy) dan dekomposisi varians, ceritanya berubah: guncangan JGB
+          nyata tapi kecil — rupiah diatur ekuilibrium multi-faktor yang didominasi dolar dan selera risiko.
+        </p>
+        <div className="flex flex-wrap gap-2 mt-6">
+          {['2.650 hari · yield asli', 'VECM · FEVD · Bayesian', 'Juni 2026'].map((p) => (
+            <span key={p} className="border border-[#EBEBEB] rounded-full px-3 py-1 text-sm text-[#6B6B6B]">{p}</span>
+          ))}
+        </div>
+        <a href="/jgb_paper_v2.pdf" download="Hermawan_2026_JGB_MultiFactor.pdf" className="inline-flex items-center gap-2 mt-7 px-4 py-2.5 rounded-lg bg-[#1A1A18] text-[#F5F5F2] text-sm font-medium hover:bg-[#000] transition-colors">
+          <FileDown size={15} /> Unduh paper revisi (PDF)
+        </a>
+      </motion.section>
+
+      <hr className="border-[#EBEBEB] my-16" />
+
+      {/* Finding 01 — VIX completes equilibrium */}
+      <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }} viewport={{ once: true, margin: '-100px' }}>
+        <p className="text-xs tracking-widest text-[#6B6B6B] uppercase mb-2">Temuan 01</p>
+        <h2 className="text-2xl font-semibold leading-snug mb-4">Risiko (VIX) Melengkapi Ekuilibrium</h2>
+        <p className="text-[15px] leading-relaxed text-[#3A3A36] mb-8">
+          Sistem JGB–SBN–dolar–rupiah saja <em>nyaris tidak kointegrasi</em> (Johansen trace 46,6, di
+          bawah nilai kritis 47,9 → rank 0). Begitu VIX masuk, trace melonjak ke 92,4 dan rank jadi 2.
+          Artinya selera risiko bukan kontrol eksternal —{' '}
+          <strong className="text-[#1A1A18]">ia yang membuat ekuilibrium jangka panjang itu ada</strong>.
+        </p>
+        <p className="text-sm font-medium mb-3">Johansen Trace (H₀: tidak ada kointegrasi)</p>
+        <ResponsiveContainer width="100%" height={150}>
+          <BarChart data={johansenBars} layout="vertical" margin={{ top: 4, right: 44, bottom: 0, left: 0 }}>
+            <CartesianGrid horizontal={false} stroke={BORDER} />
+            <XAxis type="number" tick={tick} tickLine={false} axisLine={{ stroke: BORDER }} domain={[0, 100]} />
+            <YAxis type="category" dataKey="name" width={112} tick={tick} tickLine={false} axisLine={false} />
+            <ReferenceLine x={47.9} stroke={RED} strokeDasharray="4 3" label={{ value: 'kritis 95%', position: 'top', fontSize: 10, fill: RED }} />
+            <Bar dataKey="trace" fill={INK} radius={[0, 3, 3, 0]} barSize={26}>
+              <LabelList dataKey="trace" position="right" style={{ fontSize: 11, fill: GHOST, fontFamily: 'var(--font-dm-sans)' }} />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+          {[
+            { v: '0 → 2', l: 'rank kointegrasi (baseline → +VIX)' },
+            { v: '92,4', l: 'trace dengan VIX (rank 2 @99%)' },
+            { v: 'VIX ≈ JGB', l: 'kontribusi ke vektor ekuilibrium' },
+          ].map((s, i) => (
+            <div key={i} className="border border-[#EBEBEB] rounded-lg p-4">
+              <p className="text-2xl font-semibold tracking-tight">{s.v}</p>
+              <p className="text-xs text-[#6B6B6B] mt-1 leading-snug">{s.l}</p>
+            </div>
+          ))}
+        </div>
+      </motion.section>
+
+      <hr className="border-[#EBEBEB] my-16" />
+
+      {/* Finding 02 — FEVD centerpiece */}
+      <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }} viewport={{ once: true, margin: '-100px' }}>
+        <p className="text-xs tracking-widest text-[#6B6B6B] uppercase mb-2">Temuan 02</p>
+        <h2 className="text-2xl font-semibold leading-snug mb-4">Apa yang Sebenarnya Menggerakkan Rupiah?</h2>
+        <p className="text-[15px] leading-relaxed text-[#3A3A36] mb-8">
+          Dekomposisi varians (FEVD) membobot tiap kanal. Hasilnya menjungkirkan narasi lama: pada
+          horizon 30 hari, guncangan JGB cuma menjelaskan <strong className="text-[#1A1A18]">~3%</strong>{' '}
+          fluktuasi rupiah — kalah jauh dari dolar (30%) dan risiko (15%, naik dari 1%). Bahkan saat JGB
+          diberi urutan paling menguntungkan di dekomposisi, ia tetap 3%.
+        </p>
+        <p className="text-sm font-medium mb-1">Dekomposisi Varians USD/IDR per Horizon</p>
+        <p className="text-xs text-[#6B6B6B] mb-3">% varians forecast-error yang dijelaskan tiap shock.</p>
+        <ResponsiveContainer width="100%" height={320}>
+          <AreaChart data={fevdData} margin={{ top: 8, right: 12, bottom: 4, left: 0 }} stackOffset="expand">
+            <CartesianGrid vertical={false} stroke={BORDER} />
+            <XAxis dataKey="hari" tick={tick} tickLine={false} axisLine={{ stroke: BORDER }} label={{ value: 'Horizon (hari)', position: 'insideBottom', offset: -2, fontSize: 11, fill: GHOST }} />
+            <YAxis tick={tick} tickLine={false} axisLine={false} width={40} tickFormatter={(v: number) => `${Math.round(v * 100)}%`} />
+            <Tooltip contentStyle={tooltipStyle} formatter={(value, name) => [`${value}%`, fevdLabels[String(name)] ?? name]} labelFormatter={(l) => `Hari ${l}`} />
+            <Area dataKey="own" stackId="1" stroke="none" fill={fevdColors.own} isAnimationActive={false} />
+            <Area dataKey="dxy" stackId="1" stroke="none" fill={fevdColors.dxy} isAnimationActive={false} />
+            <Area dataKey="vix" stackId="1" stroke="none" fill={fevdColors.vix} isAnimationActive={false} />
+            <Area dataKey="sbn" stackId="1" stroke="none" fill={fevdColors.sbn} isAnimationActive={false} />
+            <Area dataKey="jgb" stackId="1" stroke="none" fill={fevdColors.jgb} isAnimationActive={false} />
+          </AreaChart>
+        </ResponsiveContainer>
+        <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-3">
+          {Object.entries(fevdLabels).map(([k, lab]) => (
+            <span key={k} className="inline-flex items-center gap-1.5 text-xs text-[#6B6B6B]">
+              <span className="w-2.5 h-2.5 rounded-sm" style={{ background: fevdColors[k] }} />
+              {lab}
+            </span>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+          {fevdStat.map((s, i) => (
+            <div key={i} className="border border-[#EBEBEB] rounded-lg p-4">
+              <p className="text-3xl font-semibold tracking-tight">{s.value}</p>
+              <p className="text-xs text-[#6B6B6B] mt-1 leading-snug">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </motion.section>
+
+      <hr className="border-[#EBEBEB] my-16" />
+
+      {/* Finding 03 — MC reframe */}
+      <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }} viewport={{ once: true, margin: '-100px' }}>
+        <p className="text-xs tracking-widest text-[#6B6B6B] uppercase mb-2">Temuan 03</p>
+        <h2 className="text-2xl font-semibold leading-snug mb-4">Bukan Overshoot — Koreksi-Error</h2>
+        <p className="text-[15px] leading-relaxed text-[#3A3A36] mb-8">
+          Monte Carlo lama (random walk) seolah memprediksi overshoot ke 18.000. Tapi disimulasikan
+          benar dari dinamika VECM, rupiah justru <strong className="text-[#1A1A18]">ter-koreksi turun</strong>{' '}
+          menuju ekuilibrium (~16.200). Skenario JGB naik menggeser jalur ke atas (~16.700) — arah kanal
+          benar — tapi tak mencapai 18.000. Episode 18.000 = pergeseran kondisi ekuilibrium (repricing
+          gabungan), bukan overshoot sesaat.
+        </p>
+        <p className="text-sm font-medium mb-1">Proyeksi USD/IDR — Dinamika VECM</p>
+        <p className="text-xs text-[#6B6B6B] mb-3">Median unconditional vs skenario JGB +100bps. Garis merah = 18.000 (tak tercapai).</p>
+        <ResponsiveContainer width="100%" height={300}>
+          <AreaChart data={mcV2Data} margin={{ top: 8, right: 12, bottom: 4, left: 8 }}>
+            <CartesianGrid vertical={false} stroke={BORDER} />
+            <XAxis dataKey="hari" tick={tick} tickLine={false} axisLine={{ stroke: BORDER }} label={{ value: 'Hari', position: 'insideBottom', offset: -2, fontSize: 11, fill: GHOST }} />
+            <YAxis domain={[15800, 18200]} tick={tick} tickLine={false} axisLine={false} width={48} tickFormatter={(v: number) => id3(v)} />
+            <Tooltip contentStyle={tooltipStyle} formatter={(value, name) => (name === 'uncondMed' ? [id3(Number(value)), 'Median'] : name === 'condMed' ? [id3(Number(value)), 'JGB +100bps'] : [null, ''])} labelFormatter={(l) => `Hari ${l}`} />
+            <ReferenceLine y={18000} stroke={RED} strokeDasharray="5 4" label={{ value: '18.000 · tak tercapai', position: 'insideTopRight', fontSize: 10, fill: RED }} />
+            <Area dataKey="band" stroke="none" fill="#D4D4D0" fillOpacity={0.5} isAnimationActive={false} />
+            <Line dataKey="uncondMed" stroke={INK} strokeWidth={1.8} dot={false} type="monotone" />
+            <Line dataKey="condMed" stroke="#2c7fb8" strokeWidth={1.6} strokeDasharray="4 3" dot={false} type="monotone" />
+          </AreaChart>
+        </ResponsiveContainer>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+          {[
+            { v: '16.182', l: 'median d30 (koreksi ke ekuilibrium)' },
+            { v: '0%', l: 'jalur tembus 18.000' },
+            { v: 'β=0,28', l: 'transmisi Bayesian — P>0 ≈ 100%' },
+          ].map((s, i) => (
+            <div key={i} className="border border-[#EBEBEB] rounded-lg p-4">
+              <p className="text-2xl font-semibold tracking-tight">{s.v}</p>
+              <p className="text-xs text-[#6B6B6B] mt-1 leading-snug">{s.l}</p>
+            </div>
+          ))}
+        </div>
+      </motion.section>
+
+      <hr className="border-[#EBEBEB] my-16" />
+
+      {/* Kesimpulan */}
+      <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }} viewport={{ once: true, margin: '-100px' }}>
+        <p className="text-xs tracking-widest text-[#6B6B6B] uppercase mb-2">Kesimpulan</p>
+        <h2 className="text-2xl font-semibold leading-snug mb-4">Multi-Faktor, Bukan Satu Driver</h2>
+        <div className="border-l-2 border-[#1A1A18] pl-5 my-2">
+          <p className="text-[15px] leading-relaxed text-[#3A3A36]">
+            Guncangan pendanaan Jepang <strong className="text-[#1A1A18]">berkontribusi</strong> pada
+            dinamika rupiah, tapi efeknya bekerja terutama lewat sistem ekuilibrium yang lebih luas —
+            didominasi kondisi dolar global dan selera risiko. Transmisi JGB nyata namun kecil; episode
+            18.000 adalah repricing gabungan, bukan overshoot satu-driver.
+          </p>
+        </div>
+      </motion.section>
+
+      <hr className="border-[#EBEBEB] my-16" />
+
+      {/* Metodologi v2 */}
+      <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: 'easeOut' }} viewport={{ once: true, margin: '-100px' }}>
+        <p className="text-xs tracking-widest text-[#6B6B6B] uppercase mb-2">Metodologi</p>
+        <h2 className="text-2xl font-semibold leading-snug mb-8">Cara Kerja Analisis Revisi</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {metodologiV2.map(({ Icon, title, body }) => (
+            <div key={title} className="border border-[#EBEBEB] rounded-lg p-4">
+              <Icon size={18} className="text-[#1A1A18] mb-3" />
+              <p className="text-sm font-medium mb-1">{title}</p>
+              <p className="text-sm text-[#6B6B6B] leading-relaxed">{body}</p>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
+          <a href="/jgb_paper_v2.pdf" download="Hermawan_2026_JGB_MultiFactor.pdf" className="inline-flex items-center gap-2 text-sm text-[#6B6B6B] hover:text-[#1A1A18] transition-colors">
+            <FileDown size={14} /> Paper revisi (PDF)
+          </a>
+          <a href="#" className="inline-flex items-center gap-2 text-sm text-[#6B6B6B] hover:text-[#1A1A18] transition-colors">
+            <ExternalLink size={14} /> Notebook di GitHub
+          </a>
+        </div>
+      </motion.section>
+    </>
+  )
+}
+
+// ─── Page (tabbed) ────────────────────────────────────────────────────────────
+export default function JGBPage() {
+  const [tab, setTab] = useState<'v1' | 'v2'>('v2')
+  return (
+    <main className="bg-[#F5F5F2] text-[#1A1A18] antialiased font-[family-name:var(--font-dm-sans)]">
+      <div className="max-w-[720px] mx-auto px-6 py-24">
+        <div className="inline-flex rounded-lg border border-[#EBEBEB] p-1 bg-white mb-12">
+          {([
+            ['v1', 'Studi Awal · Jan 2026'],
+            ['v2', 'Revisi · Jun 2026'],
+          ] as const).map(([id, label]) => (
+            <button
+              key={id}
+              onClick={() => setTab(id)}
+              className={`px-4 py-2 rounded-[7px] text-sm font-medium transition-colors ${
+                tab === id ? 'bg-[#1A1A18] text-[#F5F5F2]' : 'text-[#6B6B6B] hover:text-[#1A1A18]'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <motion.div key={tab} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+          {tab === 'v1' ? <TabV1 /> : <TabV2 />}
+        </motion.div>
       </div>
     </main>
   )
