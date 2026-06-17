@@ -456,7 +456,7 @@ function JGBThumb() {
 }
 
 function JGBCard({ text }: { text: PassionCardText }) {
-  const tags = ['VECM', 'Bayesian', 'Monte Carlo', 'Python']
+  const tags = ['VECM', 'FEVD', 'Bayesian', 'Monte Carlo']
   return (
     <motion.article
       variants={fadeUp}
